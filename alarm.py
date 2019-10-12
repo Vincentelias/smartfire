@@ -1,8 +1,12 @@
 import sys, time
 from MCP3008 import *
 from Buzzer import Buzzer
+from APICaller import *
 
-try:
+apiCaller = APICaller()
+
+def startAlarm():
+    try:
     print("Starting alarm..")
     buzzer=Buzzer()
     adc = MCP3008()
@@ -13,5 +17,10 @@ try:
             alarmTriggered=True 
             buzzer.startBuzzer()
 
-except:
-    print("\nUnknown error")
+    except:
+        print("\nUnknown error")
+
+def register():
+    print("registring")
+    startAlarm()
+    
