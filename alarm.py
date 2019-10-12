@@ -8,6 +8,7 @@ alarmTriggered = False
 
 def startAlarm():
 		try:
+				alarmTriggered = False
 				print("Starting alarm..")
 				buzzer = Buzzer()
 				adc = MCP3008()
@@ -29,8 +30,10 @@ def registerDevice():
 
 def getStatus():
 	print("getting status")
-	threading.Timer(0.05,getStatus).start()
+	threading.Timer(5,getStatus).start()
 
-registerDevice()
+
 getStatus()
+registerDevice()
+
 
