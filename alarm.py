@@ -13,9 +13,10 @@ def startAlarm():
 				buzzer = Buzzer()
 				adc = MCP3008()
 				while (not alarmTriggered):
-						print(adc.read(0))
+						#print(adc.read(0))
 						if(adc.read(0)>1000):
 								alarmTriggered=True
+								apiCaller.setStatus()
 								buzzer.startBuzzer()
 
 		except:
@@ -28,12 +29,19 @@ def registerDevice():
 
 
 
-def getStatus():
-	print("getting status")
+def getStatus():	
+	buzzer = Buzzer()
+	if(apiCaller.getStatus()['triggered']):
+		buzzer.startBuzzer()
 	threading.Timer(5,getStatus).start()
+
+def setStatus():
+	apiCaller.setStatus()
+
 
 
 getStatus()
-registerDevice()
 
+registerDevice()
+setStatus()
 

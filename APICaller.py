@@ -1,3 +1,4 @@
+import json
 import requests
 import uuid
 
@@ -20,4 +21,10 @@ class APICaller:
 
 	def getStatus(self):
                 response = requests.get(self.baseUrl+"getStatus")
-                print (response.json())
+                return (response.json())
+
+	def setStatus(self):
+		print("Getting status")
+		mac = self.getMAC()
+		status = requests.post(self.baseUrl+'setStatus',data={'mac':mac, 'triggered': True})
+		print(status.status_code)
