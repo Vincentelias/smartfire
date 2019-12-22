@@ -10,7 +10,6 @@ from service import Application, Service, Characteristic, Descriptor
 GATT_CHRC_IFACE = "org.bluez.GattCharacteristic1"
 NOTIFY_TIMEOUT = 5000
 
-
 class MacAdvertisement(Advertisement):
     def __init__(self, index):
         Advertisement.__init__(self, index, "peripheral")
@@ -60,7 +59,7 @@ class MacCharacteristic(Characteristic):
     def StartNotify(self):
         if self.notifying:
             return
-
+    
         self.notifying = True
 
         value = self.get_mac()
@@ -95,15 +94,14 @@ class MacDescriptor(Descriptor):
 
         return value
 
+if __name__=="__main__":
+    app = Application()
+    app.add_service(MacService(0))
+    app.register()
 
-app = Application()
-app.add_service(MacService(0))
-app.register()
+    adv = MacAdvertisement(0)
+    adv.register()
 
-adv = MacAdvertisement(0)
-adv.register()
 
-try:
     app.run()
-except KeyboardInterrupt:
-    app.quit()
+        
