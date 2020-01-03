@@ -43,7 +43,7 @@ namespace smartfire
             }
 
             app.UseHttpsRedirection();
-
+                
             app.UseRouting();
 
             app.UseCors(
