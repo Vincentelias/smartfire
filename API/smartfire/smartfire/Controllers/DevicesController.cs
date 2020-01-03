@@ -22,137 +22,57 @@ namespace smartfire.Controllers
             _context = context;
             _db = db;
         }
-        
 
-        // GET: api/Devices
-        [HttpGet]
-        [Route("info")]
-        public async Task<ActionResult<IEnumerable<Devices>>> GetDevices()
-        {
-            return await _context.Devices.ToListAsync();
-        }
 
-        // GET: api/Devices/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Devices>> GetDevices(int id)
-        {
-            var devices = await _context.Devices.FindAsync(id);
-
-            if (devices == null)
-            {
-                return NotFound();
-            }
-
-            return devices;
-        }
-
-        // GET: api/Devices/5
+        // GET: api/alarm/info/mac
         [HttpGet("info/{mac}")]
-        public async Task<ActionResult<Devices>> GetMacDevice(string mac)
+        public async Task<ActionResult<Devices>> GetDeviceInfo(string mac)
         {
-            var device = from m in _db.Devices
+            var devices = from m in _db.Devices
                                   select m;
 
-            if (device == null)
-            {
-                return NotFound();
-            }
-
-            device = device.Where(m => m.Mac == mac);
-
-            return device.FirstOrDefault();
-        }
-
-
-        [HttpPut("toggle/{MAC}")]
-        public async Task<IActionResult> ToggleDevice(string mac, Devices devices)
-        {
-            if (mac != devices.Mac)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(devices).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!MacExists(mac))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-        // PUT: api/Devices/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutDevices(int id, Devices devices)
-        {
-            if (id != devices.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(devices).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!DevicesExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/Devices
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
-        [HttpPost]
-        public async Task<ActionResult<Devices>> PostDevices(Devices devices)
-        {
-            _context.Devices.Add(devices);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetDevices", new { id = devices.Id }, devices);
-        }
-        
-
-
-        // DELETE: api/Devices/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<Devices>> DeleteDevices(int id)
-        {
-            var devices = await _context.Devices.FindAsync(id);
             if (devices == null)
             {
                 return NotFound();
             }
 
-            _context.Devices.Remove(devices);
-            await _context.SaveChangesAsync();
+            devices = devices.Where(m => m.Mac == mac);
 
-            return devices;
+            return devices.FirstOrDefault();
         }
+
+        // GET: api/alarm/id/toggle
+        [HttpPut("toggle/{id}")]
+        public async Task<IActionResult> ToggleDevice(int id)
+        {
+
+            bool? newIsFire = null;
+            try
+            {
+                Devices device = _context.Devices.Where(d => d.Id == id).FirstOrDefault();
+                if (device != null)
+                {
+                    device.IsFire = !device.IsFire;
+                    newIsFire = device.IsFire;
+                    _context.SaveChanges();
+
+                }
+            }
+            catch (Exception)
+            {
+                return NotFound();
+            }
+
+            if (newIsFire!=null)
+            {
+                return Ok(newIsFire);
+            }
+
+            return NotFound();
+
+
+        }
+
 
         private bool DevicesExists(int id)
         {

@@ -94,9 +94,8 @@ namespace smartfire.Controllers
             return NoContent();
         }
 
+
         // POST: api/EmergencyContacts
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
         [Route("emergency-contacts")]
         public async Task<ActionResult<EmergencyContacts>> PostEmergencyContacts(EmergencyContacts emergencyContacts)
@@ -107,21 +106,21 @@ namespace smartfire.Controllers
             return CreatedAtAction("GetEmergencyContacts", new { id = emergencyContacts.Id }, emergencyContacts);
         }
 
-        // DELETE: api/EmergencyContacts/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<EmergencyContacts>> DeleteEmergencyContacts(int id)
+        [HttpDelete("emergency-contacts/{id}")]
+        public async Task<ActionResult<EmergencyContacts>> DeleteEmergencyContacts(int id, string name)
         {
-            var emergencyContacts = await _context.EmergencyContacts.FindAsync(id);
-            if (emergencyContacts == null)
-            {
-                return NotFound();
-            }
+            var emergencyContacts = from m in _db.EmergencyContacts
+                                    select m;
 
-            _context.EmergencyContacts.Remove(emergencyContacts);
+            emergencyContacts = emergencyContacts.Where(m => m.DeviceId == id && m.Name == name);
+            var removeEmergencyContacts = emergencyContacts.FirstOrDefault();
+            _context.EmergencyContacts.Remove(removeEmergencyContacts);
             await _context.SaveChangesAsync();
 
-            return emergencyContacts;
+            return StatusCode(200);
+
         }
+
 
         private bool EmergencyContactsExists(int id)
         {

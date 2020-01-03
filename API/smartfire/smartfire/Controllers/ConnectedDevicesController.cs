@@ -24,65 +24,21 @@ namespace smartfire.Controllers
             _db = db;
         }
 
-        // GET: api/ConnectedDevices
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<ConnectedDevices>>> GetConnectedDevices()
-        {
-            return await _context.ConnectedDevices.ToListAsync();
-        }
 
-        // GET: api/ConnectedDevices/5
+        // GET: api/alarm/connected-alarms/5
         [HttpGet("connected-alarms/{id}")]
         public async Task<IEnumerable<ConnectedDevices>> GetConnectedDevices(int id)
         {
-
-
 
             var connectedDevice = from m in _db.ConnectedDevices
                                   select m;
 
             connectedDevice = connectedDevice.Where(m => m.DeviceId == id);
-
-
-
             return connectedDevice.ToList();
         }
 
-        // PUT: api/ConnectedDevices/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutConnectedDevices(int id, ConnectedDevices connectedDevices)
-        {
-            if (id != connectedDevices.Id)
-            {
-                return BadRequest();
-            }
 
-            _context.Entry(connectedDevices).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ConnectedDevicesExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/ConnectedDevices
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
+        // POST: api/alarm/connected/alarms
         [HttpPost]
         [Route("connected-alarms")]
         public async Task<ActionResult<ConnectedDevices>> PostConnectedDevices(ConnectedDevices connectedDevices)
@@ -93,23 +49,21 @@ namespace smartfire.Controllers
             return CreatedAtAction("GetConnectedDevices", new { id = connectedDevices.Id }, connectedDevices);
         }
 
-        // DELETE: api/ConnectedDevices/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<ConnectedDevices>> DeleteConnectedDevices(int id)
-        {
-            var connectedDevices = await _context.ConnectedDevices.FindAsync(id);
-            
-            
-            
-            if (connectedDevices == null)
-            {
-                return NotFound();
-            }
 
-            _context.ConnectedDevices.Remove(connectedDevices);
+        // DELETE: api/alarm/connected-alarms/id
+        [HttpDelete("connected-alarms/{id}")]
+        public async Task<ActionResult<ConnectedDevices>> DeleteConnectedDevices(int id, int connectedDeviceId)
+        {
+
+            var connectedDevice = from m in _db.ConnectedDevices
+                                  select m;
+
+            connectedDevice = connectedDevice.Where(m => m.DeviceId == id && m.ConnectedDeviceId == connectedDeviceId);
+            var removeConnectedDevice = connectedDevice.FirstOrDefault();
+            _context.ConnectedDevices.Remove(removeConnectedDevice);
             await _context.SaveChangesAsync();
 
-            return connectedDevices;
+            return StatusCode(200);
         }
 
         private bool ConnectedDevicesExists(int id)

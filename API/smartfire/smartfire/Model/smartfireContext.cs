@@ -1,6 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace smartfire.Model
 {
@@ -18,14 +16,12 @@ namespace smartfire.Model
         public virtual DbSet<ConnectedDevices> ConnectedDevices { get; set; }
         public virtual DbSet<Devices> Devices { get; set; }
         public virtual DbSet<EmergencyContacts> EmergencyContacts { get; set; }
-        public virtual DbSet<Events> Events { get; set; }
         public virtual DbSet<Measurements> Measurements { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
                 optionsBuilder.UseSqlServer("Server=tcp:smartfire.database.windows.net,1433;Initial Catalog=smartfire;Persist Security Info=False;User ID=smartfire;Password=Thebteam1;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
             }
         }
@@ -63,13 +59,9 @@ namespace smartfire.Model
                     .HasConstraintName("FK_DeviceEmergencyContact");
             });
 
-            modelBuilder.Entity<Events>(entity =>
-            {
-                entity.Property(e => e.Name).IsUnicode(false);
-            });
-
             modelBuilder.Entity<Measurements>(entity =>
             {
+                entity.Property(e => e.Event).IsUnicode(false);
                 entity.Property(e => e.MeasuredOn).IsUnicode(false);
 
                 entity.HasOne(d => d.Device)
@@ -77,10 +69,7 @@ namespace smartfire.Model
                     .HasForeignKey(d => d.DeviceId)
                     .HasConstraintName("FK_DeviceMeasurement");
 
-                entity.HasOne(d => d.Event)
-                    .WithMany(p => p.Measurements)
-                    .HasForeignKey(d => d.EventId)
-                    .HasConstraintName("FK_EventMeasurement");
+
             });
 
             OnModelCreatingPartial(modelBuilder);

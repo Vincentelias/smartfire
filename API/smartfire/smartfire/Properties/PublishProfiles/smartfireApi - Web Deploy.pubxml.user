@@ -6,7 +6,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
-    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAnCSmizMKhUi3azqXSKqUqgAAAAACAAAAAAAQZgAAAAEAACAAAACCor0zwpcN/N1Opz/IIAjsTUrOA+7fKX7VY/mOdeUsfgAAAAAOgAAAAAIAACAAAAAAvmIEnFdBsbTBXxabj+4ga+WEr0b94+6AQyzlRLxk6YAAAADxt89vK1vsJyMI9cjXtnxpPTK/Qk8cWevhNfRiDlIFZsddk2YOyfTOd1ZJ2mDQnBto7hcx6VFb+bllVj90mcOBnUA8ca0ecefFtSSkzPHTxuNMG28DRVT2qOfptBgf3Xi8CtAUCVHHloN8/D36LAHCzaMQOzP55zzSmFc9oqB/80AAAADhFhFJ17G2J2slWR94V+Xi/lkmayr/jTur99EmUV7ZdU+MNPnF60bwazI2KYapYRhfA/4ZuyyI541WDvn+1vO0</EncryptedPassword>
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAe4HKYX1FMEK8IIqigpqvIQAAAAACAAAAAAAQZgAAAAEAACAAAADlmMZTRxsEIavkBnvdxCd83wzlXI00D1q+n2jzM5rrkwAAAAAOgAAAAAIAACAAAACp6mJLzqN6+jrvHJ+i/vGXWLQci7LiqyKjxCSqyJWz+yAAAAA3ikq40aqXvmiSxf1PYeWeYmayJNGuCTHcnuQ8zxk0s0AAAAD9nWbpMKLsULn452M9f0JgdZwB1HfjLS+U19hLLZO/H4jVuzmQT4EwmwqVqMo+W11crRBI7P2phXcngLsChpTL</EncryptedPassword>
   </PropertyGroup>
   <ItemGroup>
     <DestinationConnectionStrings Include="smartfireContext">

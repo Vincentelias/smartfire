@@ -11,18 +11,19 @@ namespace smartfire.Model
         public int Id { get; set; }
         [Column("Device_id")]
         public int? DeviceId { get; set; }
-        [Column("Event_id")]
-        public int? EventId { get; set; }
-        public double? Temperature { get; set; }
-        [Column("Measured_on")]
         
+        public string? Event { get; set; }
+        public double? Temperature { get; set; }
+        public double? Humidity { get; set; }
+        public double? Co_percentage{ get; set; }
+        public double? Gas_percentage { get; set; }
+
+
+        [Column("Measured_on")]
         public DateTime MeasuredOn { get; set; }
 
         [ForeignKey(nameof(DeviceId))]
         [InverseProperty(nameof(Devices.Measurements))]
         public virtual Devices Device { get; set; }
-        [ForeignKey(nameof(EventId))]
-        [InverseProperty(nameof(Events.Measurements))]
-        public virtual Events Event { get; set; }
     }
 }

@@ -1,34 +1,34 @@
 {
   "format": 1,
   "restore": {
-    "E:\\TI2019-2020\\Cloud, Smart Devices and Internet of Things\\API\\smartfire\\smartfire\\smartfire.csproj": {}
+    "D:\\sem5\\Internet of things\\smartfire\\API\\smartfire\\smartfire\\smartfire.csproj": {}
   },
   "projects": {
-    "E:\\TI2019-2020\\Cloud, Smart Devices and Internet of Things\\API\\smartfire\\smartfire\\smartfire.csproj": {
+    "D:\\sem5\\Internet of things\\smartfire\\API\\smartfire\\smartfire\\smartfire.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\TI2019-2020\\Cloud, Smart Devices and Internet of Things\\API\\smartfire\\smartfire\\smartfire.csproj",
+        "projectUniqueName": "D:\\sem5\\Internet of things\\smartfire\\API\\smartfire\\smartfire\\smartfire.csproj",
         "projectName": "smartfire",
-        "projectPath": "E:\\TI2019-2020\\Cloud, Smart Devices and Internet of Things\\API\\smartfire\\smartfire\\smartfire.csproj",
-        "packagesPath": "C:\\Users\\leona\\.nuget\\packages\\",
-        "outputPath": "E:\\TI2019-2020\\Cloud, Smart Devices and Internet of Things\\API\\smartfire\\smartfire\\obj\\",
+        "projectPath": "D:\\sem5\\Internet of things\\smartfire\\API\\smartfire\\smartfire\\smartfire.csproj",
+        "packagesPath": "C:\\Users\\vince\\.nuget\\packages\\",
+        "outputPath": "D:\\sem5\\Internet of things\\smartfire\\API\\smartfire\\smartfire\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\leona\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\vince\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
-          "netcoreapp3.1"
+          "netcoreapp3.0"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "netcoreapp3.1": {
+          "netcoreapp3.0": {
             "projectReferences": {}
           }
         },
@@ -39,8 +39,12 @@
         }
       },
       "frameworks": {
-        "netcoreapp3.1": {
+        "netcoreapp3.0": {
           "dependencies": {
+            "Microsoft.AspNetCore.Cors": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
               "version": "[3.1.0, )"
@@ -90,7 +94,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.100\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.0.100\\RuntimeIdentifierGraph.json"
         }
       }
     }
