@@ -3,14 +3,11 @@ from MCP3008 import MCP3008
 import sys
 import Adafruit_DHT
 from Buzzer import Buzzer
-from APICaller import APICaller
 from time import sleep
 import asyncio
 import RPi.GPIO as GPIO
-import threading
 import json
 from azure.iot.device.aio import IoTHubDeviceClient
-
 #for DHT11 temperature sensor
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(23, GPIO.OUT)
@@ -24,7 +21,6 @@ class Alarm:
 
 	def __init__(self):
 		self.fire_detected=False
-		self.apiCaller=APICaller()
 		self.buzzer=Buzzer()
 		self.adc = MCP3008()
 
@@ -33,7 +29,6 @@ class Alarm:
 		conn_str = "HostName=Smartfire.azure-devices.net;DeviceId=smartfire-1;SharedAccessKey=sFQIzn79jON2ZBpL3iiBHScmIBXMXf57bA5PFM69ie8="
 		self.device_client = IoTHubDeviceClient.create_from_connection_string(conn_str)
 		await self.device_client.connect()
-		print("connected to iot hub")
 
 
 	async def start(self):
@@ -47,26 +42,25 @@ class Alarm:
 			mq3_data=self.get_mq3_data()
 			mq9_data=self.get_mq9_data()
 			await self.save_measurements(temperature,humidity,mq3_data,mq9_data)
-
+			sleep(4)
 
 			if((mq3_data>Alarm.gas_threshold or mq9_data>Alarm.smoke_threshold or temperature>Alarm.temperature_threshold) and not self.fire_detected):
 				self.fire_detected=True
-				#runs blocking buzzer code in different thread
-				buzzer_thread = threading.Thread(target=self.buzzer.start)
-				buzzer_thread.start()
+				self.buzzer.start()
+
+			else:
+				self.buzzer.stop()
 
 
 	async def save_measurements(self,temperature,humidity,mq3_data,mq9_data):
-		print("saving measurements")
+		print("saving saving measurements")
 
 		gas_percentage=self.convert_percentage(mq3_data,350,1000)
 		co_percentage=self.convert_percentage(mq3_data,990,5000)
-		print("gas: "+str(mq3_data))
-		print("Temperature: "+str(temperature)+"	Humidity: "+str(humidity)+"	gas percentage: "+str(gas_percentage)+"%	o percentage: "+str(co_percentage)+"%")
 		
 		data = {
 			'device_id': 1,
-			'Event': "measurement",
+			'event': "measurement",
 			'temperature': float(temperature),
 			'gas_percentage':gas_percentage,
 			'co_percentage':co_percentage,
@@ -75,8 +69,8 @@ class Alarm:
 		}
 
 		json_body = json.dumps(data)
-		print("Sending message: ", json_body)
 		await self.device_client.send_message(json_body)
+		
 		twin = await self.device_client.get_twin()
 		self.handle_twin(twin)
 
@@ -84,14 +78,15 @@ class Alarm:
 
 
 	def handle_twin(self,twin):
-		print("Twin received", twin)
-		if ('desired' in twin):
-			desired = twin['desired']
-			if ('is_fire' in desired):
-				if desired['is_fire']==1:
-					buzzer_thread = threading.Thread(target=self.buzzer.start)
-					buzzer_thread.start()
-
+		if(not self.fire_detected):
+			if ('desired' in twin):
+				desired = twin['desired']
+				if ('is_fire' in desired):
+					if desired['is_fire']==1:
+						self.buzzer.start()
+					elif desired['is_fire']==0:
+						self.buzzer.stop()
+						
 
 	def convert_percentage(self,number,min,max):
 		percentage = round(((number-min)/(max-min))*100,2)
