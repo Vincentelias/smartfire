@@ -49,6 +49,7 @@ class Alarm:
 				self.buzzer.start()
 
 			else:
+				self.fire_detected=False
 				self.buzzer.stop()
 
 

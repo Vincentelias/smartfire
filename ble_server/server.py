@@ -46,7 +46,7 @@ class MacCharacteristic(Characteristic):
         mac = ':'.join(['%02x' % ord(char) for char in info[18:24]])
         for c in mac:
             value.append(dbus.Byte(c.encode()))
-
+        print(value)
         return value
 
     def set_mac_callback(self):

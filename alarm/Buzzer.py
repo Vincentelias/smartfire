@@ -18,7 +18,6 @@ class Buzzer:
 			self.t.do_run = False
 			self.t.join()
 			self.is_buzzing=False
-		print("stopped")
 
 	def start(self):
 		if not(self.is_buzzing):
@@ -35,7 +34,6 @@ class Buzzer:
 			self.turn_on_for(50,1000,0.1)
 			self.turn_on_for(50,2000,0.1)
 			self.turn_off_for(.05)
-		print("stopping buzzer")
 
 
 	def turn_on_for(self,duty_cycle,frequency,duration):
