@@ -66,6 +66,7 @@ namespace smartfire.Controllers
             return StatusCode(200);
         }
 
+
         private bool ConnectedDevicesExists(int id)
         {
             return _context.ConnectedDevices.Any(e => e.Id == id);

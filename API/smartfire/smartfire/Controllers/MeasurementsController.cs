@@ -69,16 +69,15 @@ namespace smartfire.Controllers
         }
 
 
-        // POST: api/Measurements/5
+        // POST: api/alarm/measurements
         [HttpPost("measurements")]
         public async Task<ActionResult<Measurements>> PostMeasurements(Measurements measurements)
         {
             _context.Measurements.Add(measurements);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetMeasurements", new { id = measurements.Id }, measurements);
+            return Ok();
         }
-
 
 
         private bool MeasurementsExists(int id)

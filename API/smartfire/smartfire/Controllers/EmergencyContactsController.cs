@@ -24,28 +24,8 @@ namespace smartfire.Controllers
             _db = db;
         }
 
-        // GET: api/EmergencyContacts
-        [HttpGet]
-        [Route("emergency-contacts")]
-        public async Task<ActionResult<IEnumerable<EmergencyContacts>>> GetEmergencyContacts()
-        {
-            return await _context.EmergencyContacts.ToListAsync();
-        }
 
-        // GET: api/EmergencyContacts/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<EmergencyContacts>> GetEmergencyContacts(int id)
-        {
-            var emergencyContacts = await _context.EmergencyContacts.FindAsync(id);
-
-            if (emergencyContacts == null)
-            {
-                return NotFound();
-            }
-
-            return emergencyContacts;
-        }
-
+        // GET: api/alarm/emergency-contacts/id
         [HttpGet("emergency-contacts/{id}")]
         public async Task<IEnumerable<EmergencyContacts>> GetEmergencyContactsWithDeviceId(int id)
         {
@@ -55,47 +35,11 @@ namespace smartfire.Controllers
 
 
             emergencyContact = emergencyContact.Where(m => m.DeviceId == id);
-
-
-            
-
             return emergencyContact.ToList();
         }
 
-        // PUT: api/EmergencyContacts/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutEmergencyContacts(int id, EmergencyContacts emergencyContacts)
-        {
-            if (id != emergencyContacts.Id)
-            {
-                return BadRequest();
-            }
 
-            _context.Entry(emergencyContacts).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!EmergencyContactsExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-
-        // POST: api/EmergencyContacts
+        // POST: api/alarm/emergency-contacts
         [HttpPost]
         [Route("emergency-contacts")]
         public async Task<ActionResult<EmergencyContacts>> PostEmergencyContacts(EmergencyContacts emergencyContacts)
@@ -106,6 +50,8 @@ namespace smartfire.Controllers
             return CreatedAtAction("GetEmergencyContacts", new { id = emergencyContacts.Id }, emergencyContacts);
         }
 
+
+        // DELETE: api/alarm/emergency-contacts/id
         [HttpDelete("emergency-contacts/{id}")]
         public async Task<ActionResult<EmergencyContacts>> DeleteEmergencyContacts(int id, string name)
         {
@@ -120,7 +66,6 @@ namespace smartfire.Controllers
             return StatusCode(200);
 
         }
-
 
         private bool EmergencyContactsExists(int id)
         {

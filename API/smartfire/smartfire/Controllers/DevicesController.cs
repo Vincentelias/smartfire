@@ -41,6 +41,24 @@ namespace smartfire.Controllers
             return devices.FirstOrDefault();
         }
 
+
+        // GET: api/alarm/info/id
+        [HttpGet("fire-status/{id}")]
+        public async Task<ActionResult<bool>> GetFireStatus(int id)
+        {
+            var devices = from m in _db.Devices
+                          select m;
+
+            if (devices == null)
+            {
+                return NotFound();
+            }
+
+            bool? isfire = devices.Where(m => m.Id == id).Select(d => d.IsFire).FirstOrDefault();
+            return isfire;
+        }
+
+
         // GET: api/alarm/id/toggle
         [HttpPut("toggle/{id}")]
         public async Task<IActionResult> ToggleDevice(int id)
@@ -69,7 +87,6 @@ namespace smartfire.Controllers
             }
 
             return NotFound();
-
 
         }
 
